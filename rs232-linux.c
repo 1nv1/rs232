@@ -83,8 +83,7 @@ int comEnumerate()
     comDevices[i].port = NULL;
   }
   noDevices = 0;
-  for (int i = 0; i < noBases; i++)
-    _AppendDevices(devBases[i]);
+  for (int i = 0; i < noBases; i++) _AppendDevices(devBases[i]);
   return noDevices;
 }
 
@@ -169,11 +168,9 @@ int comOpen(int index, int baudrate)
 
 void comClose(int index)
 {
-  if (index >= noDevices || index < 0)
-    return;
+  if (index >= noDevices || index < 0) return;
   COMDevice * com = &comDevices[index];
-  if (com->handle < 0) 
-    return;
+  if (com->handle < 0) return;
   tcdrain(com->handle);
   close(com->handle);
   com->handle = -1;
@@ -181,32 +178,25 @@ void comClose(int index)
 
 void comCloseAll()
 {
-  for (int i = 0; i < noDevices; i++)
-    comClose(i);
+  for (int i = 0; i < noDevices; i++) comClose(i);
 }
 
 /*****************************************************************************/
 int comWrite(int index, const char * buffer, size_t len)
 {
-  if (index >= noDevices || index < 0)
-    return 0;
-  if (comDevices[index].handle <= 0)
-    return 0;
+  if (index >= noDevices || index < 0) return 0;
+  if (comDevices[index].handle <= 0) return 0;
   int res = write(comDevices[index].handle, buffer, len);
-  if (res < 0)
-    res = 0;
+  if (res < 0) res = 0;
   return res;
 }
 
 int comRead(int index, char * buffer, size_t len)
 {
-  if (index >= noDevices || index < 0)
-    return 0;
-  if (comDevices[index].handle <= 0)
-    return 0;
+  if (index >= noDevices || index < 0) return 0;
+  if (comDevices[index].handle <= 0) return 0;
   int res = read(comDevices[index].handle, buffer, len);
-  if (res < 0)
-    res = 0;
+  if (res < 0) res = 0;
   return res;
 }
 
